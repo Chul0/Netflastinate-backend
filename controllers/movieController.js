@@ -8,7 +8,9 @@ const movieController = {}
 //List all movies
 movieController.getAllMovies = async (req, res) => {
     try {
-        const movies = await models.movie.findAll()
+        const movies = await models.movie.findAll({
+            include: models.genre
+        })
         res.json({movies})
     } catch (error) {
         res.json({error: error.message})
