@@ -20,7 +20,7 @@ userController.create = async (req, res) => {
         res.json({user, message: 'User created!', userId:encryptedId})
     } catch (error) {
         if(error.errors[0].message === "email must be unique"){
-            res.status(400).json( {error:'Email is already used'})
+            res.json( {error:'Email is already used'})
         }else if (error.errors[0].message ==="Validation notEmpty on name failed"){
             res.json({error: 'Name should be filled'})
         }else{
