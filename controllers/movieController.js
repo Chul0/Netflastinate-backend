@@ -17,6 +17,19 @@ movieController.getAllMovies = async (req, res) => {
     }
 }
 
+//List all genres
+//Had to add this route, to list all movies by genre
+movieController.getAllGenres = async (req, res) => {
+    try {
+        const genre = await models.genre.findAll({
+            include: models.movie
+        })
+        res.json({genre})
+    } catch (error) {
+        res.json({error: error.message})
+    }
+}
+
 //Get a single movie info
 movieController.getOneMovie = async (req,res) => {
     try {

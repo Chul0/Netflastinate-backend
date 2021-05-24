@@ -20,20 +20,20 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    {
-      name: 'suspense',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      name: 'thriller',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
+    // {
+    //   name: 'Suspense',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date()
+    // },
+    // {
+    //   name: 'Thriller',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date()
+    // },
   ])
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('genres', null, {});
+    return queryInterface.bulkDelete('genres', null, {})
   }
 };
