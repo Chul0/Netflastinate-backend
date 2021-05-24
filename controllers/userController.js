@@ -8,11 +8,11 @@ const userController = {}
 //signup
 userController.create = async (req, res) => {
     try {
-        const hashedpassword= bcrypt.hashSync(req.body.password,10)
+        const hashedPassword= bcrypt.hashSync(req.body.password,10)
         const user = await models.user.create({
             name: req.body.name,
             email: req.body.email,
-            password: hashedpassword
+            password: hashedPassword
         })
 
         const encryptedId = jwt.sign({ userId: user.id}, process.env.JWT_SECRET) 
@@ -70,6 +70,52 @@ userController.verifyUser = async(req,res) => {
         res.status(400).json({ error: error.message })
     }
 }
+
+//List saved movies in my list
+userController.getMyList = async (req, res) => {
+    try {
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+
+        const user = await models.user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+
+        const savedMovie = await user.getMovies()
+
+        res.json(savedMovie)
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+//User profile editing
+userController.update = async (req, res) => {
+    try {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10)
+        const updates = {
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword
+        }
+        //if you've used hashedPassword for signup, you should use it in editing profile too! 
+
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+
+        const user= await models.user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+        console.log(user);
+        const updateUser = await user.update(updates)
+        res.json({updateUser})
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 
 
 module.exports = userController

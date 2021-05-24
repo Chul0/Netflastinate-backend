@@ -18,8 +18,8 @@ app.use('/users', userRoutes)
 const movieRoutes = require('./routes/movieRoutes')
 app.use('/movies', movieRoutes)
 
-const commentRoutes = require('./routes/commentRoutes')
-app.use('/comments', commentRoutes)
+// const commentRoutes = require('./routes/commentRoutes')
+// app.use('/comments', commentRoutes)
 
 ///////////////////code above//////////////////
 
