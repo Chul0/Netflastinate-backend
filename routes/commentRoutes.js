@@ -1,8 +1,8 @@
-const commentRoutes = require('express').Router()
-const commentController = require('../controllers/commentController')
+// const commentRoutes = require('express').Router()
+// const commentController = require('../controllers/commentController')
 
 
+// commentRoutes.post('/', commentController.createComments)
 
-
-module.exports = commentRoutes
+// module.exports = commentRoutes
 

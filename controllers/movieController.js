@@ -78,4 +78,34 @@ movieController.delete = async (req, res) => {
     }
 }
 
+//Create comments
+movieController.createComments = async (req, res) => {
+    try {
+        const movie = await models.movie.findOne({
+            where: {
+                id:req.params.id
+            }
+        })
+
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+
+        const user = await models.user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+
+        const comment = await models.comment.create({
+            description: req.body.description
+        })
+
+        await movie.addComment(comment)
+        await user.addComment(comment)
+        await comment.reload()
+        res.json({movie, user, comment})
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 module.exports = movieController
