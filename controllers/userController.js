@@ -116,6 +116,31 @@ userController.update = async (req, res) => {
     }
 }
 
+//Delete user and user's comments
+userController.deleteUser = async (req, res) => {
+    try {
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+
+        const user = await models.user.findOne({
+            where:{
+                id:decryptedId.userId
+            }
+        })
+
+        //Get user's comments and delete     
+        const comments = await user.getComments()
+        for (let i=0; i<comments.length; i++){
+            await comments[i].destroy()
+        }
+        
+
+        await user.destroy()
+        res.json({user, comments})
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 
 
 module.exports = userController
