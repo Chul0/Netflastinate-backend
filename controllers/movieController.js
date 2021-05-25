@@ -125,4 +125,48 @@ movieController.createComments = async (req, res) => {
     }
 }
 
+
+//Edit comments
+movieController.editComments = async (req, res) => {
+    try {
+        const movie = await models.movie.findOne({
+            where: {
+                id:req.params.id
+            }
+        })
+
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+
+        const user = await models.user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+
+        //get comments from a user and a movie
+        const userComments = await user.getComments()
+        const movieComments = await movie.getComments()
+       
+
+        if(userComments[0].userId !== movieComments[0].userId){
+            res.status(401).json({message: 'You can only edit the comments you created'})
+            return 
+        }
+            //Find a comment if userId, movieId match
+        const comment = await models.comment.findOne({
+            where: {
+                id: req.params.commentId,
+                userId: userComments[0].userId,
+                movieId: movieComments[0].userId
+            }
+        })
+
+        const updateComment = await comment.update({description: req.body.description})
+        
+        res.json({userComments, movieComments, comment, updateComment})
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 module.exports = movieController
