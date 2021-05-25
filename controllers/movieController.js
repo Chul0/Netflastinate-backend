@@ -146,24 +146,25 @@ movieController.editComments = async (req, res) => {
         //get comments from a user and a movie
         const userComments = await user.getComments()
         const movieComments = await movie.getComments()
-       
+    //    console.log(user);
 
-        if(userComments[0].userId !== movieComments[0].userId){
-            res.status(401).json({message: 'You can only edit the comments you created'})
+        if(user.id !== userComments[0].userId){
+            res.json({message: 'You can only edit the comments you created'})
             return 
         }
-            //Find a comment if userId, movieId match
+            //Find a comment if userId and movieId match
         const comment = await models.comment.findOne({
             where: {
                 id: req.params.commentId,
                 userId: userComments[0].userId,
-                movieId: movieComments[0].userId
+                movieId: movieComments[0].movieId
             }
         })
 
         const updateComment = await comment.update({description: req.body.description})
         
-        res.json({userComments, movieComments, comment, updateComment})
+        res.json({userComments, comment, updateComment})
+        // res.json({user})
     } catch (error) {
         res.json(error)
     }
