@@ -8,6 +8,7 @@ movieRoutes.post('/:id', movieController.save)
 movieRoutes.delete('/:id', movieController.delete)
 movieRoutes.post('/:id/comment', movieController.createComments)
 movieRoutes.put('/:id/comment/:commentId', movieController.editComments)
+movieRoutes.delete('/:id/comment/:commentId', movieController.deleteComments)
 
 
 module.exports = movieRoutes

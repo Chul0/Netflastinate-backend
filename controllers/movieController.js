@@ -148,6 +148,7 @@ movieController.editComments = async (req, res) => {
         const movieComments = await movie.getComments()
     //    console.log(user);
 
+        //if userId and comment userId don't match, don't allow editing
         if(user.id !== userComments[0].userId){
             res.json({message: 'You can only edit the comments you created'})
             return 
@@ -164,6 +165,51 @@ movieController.editComments = async (req, res) => {
         const updateComment = await comment.update({description: req.body.description})
         
         res.json({userComments, comment, updateComment})
+        // res.json({user})
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+//Delete comments
+movieController.deleteComments = async (req, res) => {
+    try {
+        const movie = await models.movie.findOne({
+            where: {
+                id:req.params.id
+            }
+        })
+
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+
+        const user = await models.user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+
+        //get comments from a user and a movie
+        const userComments = await user.getComments()
+        const movieComments = await movie.getComments()
+    //    console.log(user);
+
+        //if userId and comment userId don't match, don't allow editing
+        if(user.id !== userComments[0].userId){
+            res.json({message: 'You can only delete the comments you created'})
+            return 
+        }
+            //Find a comment if userId and movieId match
+        const comment = await models.comment.findOne({
+            where: {
+                id: req.params.commentId,
+                userId: userComments[0].userId,
+                movieId: movieComments[0].movieId
+            }
+        })
+
+        const deleteComment = await comment.destroy()
+        
+        res.json({user, comment, message: 'Comment deleted'})
         // res.json({user})
     } catch (error) {
         res.json(error)
