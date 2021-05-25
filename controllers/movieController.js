@@ -38,7 +38,8 @@ movieController.getOneMovie = async (req,res) => {
                 id: req.params.id
             }
         })
-        res.json({movie})
+        let comments = await movie.getComments({order:[['id','DESC']], include: models.user})
+        res.json({movie, comments})
     } catch (error) {
         res.json({error: error.message})
     }
