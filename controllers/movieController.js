@@ -93,6 +93,7 @@ movieController.delete = async (req, res) => {
     }
 }
 
+
 //Create comments
 movieController.createComments = async (req, res) => {
     try {
