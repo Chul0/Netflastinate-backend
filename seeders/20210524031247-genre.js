@@ -20,16 +20,11 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    // {
-    //   name: 'Suspense',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date()
-    // },
-    // {
-    //   name: 'Thriller',
-    //   createdAt: new Date(),
-    //   updatedAt: new Date()
-    // },
+    {
+      name: 'Thriller',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
   ])
   },
 
