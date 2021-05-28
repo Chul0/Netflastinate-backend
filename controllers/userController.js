@@ -23,6 +23,8 @@ userController.create = async (req, res) => {
             res.json( {error:'Email is already used'})
         }else if (error.errors[0].message ==="Validation notEmpty on name failed"){
             res.json({error: 'Name should be filled'})
+        }else if (error.errors[0].message ==="Validation notEmpty on email failed"){
+            res.json({error: 'Email should be filled'})
         }else{
             res.json({error:error.message})
         }
